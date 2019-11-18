@@ -18,6 +18,12 @@ implementation 'com.github.wenkency:titlebar:1.0.0'
 
 ### 使用方式
 ```
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        ...
+    </style>
+
         DefTitleBar titleBar = new DefTitleBuilder(this)
                 // 返回按钮
                 .setLeftRes(R.drawable.ic_title_back)

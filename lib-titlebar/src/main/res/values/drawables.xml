@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <drawable name="title_trans">#00ffffff</drawable>
+    <drawable name="title_trans_half">#22999999</drawable>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+
+    <!--标题默认高度-->
+    <dimen name="title_height">45dp</dimen>
+    <!--标题默认字体大小-->
+    <dimen name="title_size">18dp</dimen>
+
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--线的颜色-->
+    <color name="lineColor">#e6e6e6</color>
+    <!--标题字体默认颜色-->
+    <color name="titleColor">#333333</color>
+    <!--标题右边字体默认颜色-->
+    <color name="titleColorRightText">#5F646E</color>
+</resources>

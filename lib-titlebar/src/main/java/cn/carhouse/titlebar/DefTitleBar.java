@@ -117,6 +117,7 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
         }
         return this;
     }
+
     /**
      * 替换右边的View
      */
@@ -159,6 +160,20 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
     /**
      * 设置根布局背景颜色
      */
+    public void setRootBackgroundResource(int resId) {
+        findViewById(R.id.ll_title_root).setBackgroundResource(resId);
+    }
+
+    /**
+     * 设置标题内容背景颜色
+     */
+    public void setTitleBackgroundResource(int resId) {
+        findViewById(R.id.cl_title_content).setBackgroundResource(resId);
+    }
+
+    /**
+     * 设置根布局背景颜色
+     */
     public void setRootBackgroundColor(int color) {
         findViewById(R.id.ll_title_root).setBackgroundColor(color);
     }
@@ -170,37 +185,85 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
         findViewById(R.id.cl_title_content).setBackgroundColor(color);
     }
 
+    /**
+     * 默认白色样式
+     */
+    public void whiteStyle() {
+        whiteStyle(Color.WHITE, false);
+    }
 
     /**
      * 白底黑字的样式
+     *
+     * @param windowColor 背景色
+     * @param isTrans     除非渐变，不然建议设置为false
      */
-    public void whiteStyle() {
+    public void whiteStyle(int windowColor, boolean isTrans) {
         if (mActivity == null) {
             return;
         }
-        // 1. 背景
-        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        // 1. 标题也是透明的
+        setRootBackgroundColor(Color.TRANSPARENT);
+        // 2. 标题颜色是透明的
+        setTitleBackgroundColor(Color.TRANSPARENT);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // 1. 标题也是透明的
-            setRootBackgroundColor(Color.TRANSPARENT);
-            // 2. 标题颜色是透明的
-            setTitleBackgroundColor(Color.TRANSPARENT);
-            // 3. 设置padding
-            TitleBarUtil.setTitlePadding(mViewHelper.getContentView());
             // 4. 设置Activity透明
-            TitleBarUtil.setStatusTranslucent(mActivity);
+            TitleBarUtil.setStatusTranslucent(mActivity, Color.WHITE);
+            mViewHelper.getContentView().setFitsSystemWindows(true);
+            if (isTrans) {
+                // 3. 设置padding
+                TitleBarUtil.setTitlePadding(mViewHelper.getContentView());
+                mViewHelper.getContentView().setFitsSystemWindows(false);
+            }
             // 5. 状态栏字体是黑色的
             TitleBarUtil.setMStateBarFontColor(mActivity, true);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 1. 背景是透明的
-            setRootBackgroundColor(Color.TRANSPARENT);
-            // 2. 标题颜色是白色的
-            setTitleBackgroundColor(Color.TRANSPARENT);
-            // 3. 设置padding
-            TitleBarUtil.setTitlePadding(mViewHelper.getContentView());
             // 4. 设置Activity透明
             TitleBarUtil.setStatusTranslucent(mActivity);
+            mViewHelper.getContentView().setFitsSystemWindows(true);
+            if (isTrans) {
+                TitleBarUtil.setTitlePadding(mViewHelper.getContentView());
+                mViewHelper.getContentView().setFitsSystemWindows(false);
+            }
         }
+        // 最后设置背景
+        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(windowColor));
+    }
+
+    /**
+     * 标题样式:适用于渐变色
+     *
+     * @param resId       标题的颜色
+     * @param windowColor 背景颜色
+     */
+    public void resourceStyle(int resId, int windowColor) {
+        this.resourceStyle(resId, windowColor, false);
+    }
+
+    /**
+     * 标题样式
+     *
+     * @param resId       标题的颜色
+     * @param windowColor 背景颜色
+     * @param isDark      状态栏字体是不是黑色
+     */
+    public void resourceStyle(int resId, int windowColor, boolean isDark) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // 1. 标题颜色
+            setRootBackgroundResource(resId);
+            // 2. 标题颜色是透明的
+            setTitleBackgroundColor(Color.TRANSPARENT);
+            // 3. 设置标题和颜色
+            TitleBarUtil.setStatusTranslucent(mActivity, resId, true);
+            // 4. 设置Activity透明
+            TitleBarUtil.setTitlePadding(mViewHelper.getContentView());
+            mViewHelper.getContentView().setFitsSystemWindows(false);
+            // 5. 状态栏字体颜色
+            TitleBarUtil.setMStateBarFontColor(mActivity, isDark);
+        }
+        // 最后设置背景
+        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(windowColor));
     }
 
     /**
@@ -209,22 +272,32 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
      * @param titleColor  标题的颜色
      * @param windowColor 背景颜色
      * @param isDark      状态栏字体是不是黑色
+     * @param isTrans     除非渐变，不然建议设置为false
      */
-    public void colorStyle(int titleColor, int windowColor, boolean isDark) {
-        // 1. 背景
-        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(windowColor));
+    public void colorStyle(int titleColor, int windowColor, boolean isDark, boolean isTrans) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 1. 标题颜色
             setRootBackgroundColor(titleColor);
             // 2. 标题颜色是透明的
             setTitleBackgroundColor(Color.TRANSPARENT);
-            // 3. 设置padding
-            TitleBarUtil.setTitlePadding(mViewHelper.getContentView());
-            // 4. 设置Activity透明
-            TitleBarUtil.setStatusTranslucent(mActivity);
+            // 3. 设置标题和颜色
+            TitleBarUtil.setStatusTranslucent(mActivity, titleColor);
+            mViewHelper.getContentView().setFitsSystemWindows(true);
+            // 如果要透明渐变
+            if (isTrans) {
+                // 4. 设置Activity透明
+                TitleBarUtil.setTitlePadding(mViewHelper.getContentView());
+                mViewHelper.getContentView().setFitsSystemWindows(false);
+            }
             // 5. 状态栏字体颜色
             TitleBarUtil.setMStateBarFontColor(mActivity, isDark);
         }
+        // 最后设置背景
+        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(windowColor));
+    }
+
+    public void colorStyle(int titleColor, int windowColor) {
+        colorStyle(titleColor, windowColor, false, false);
     }
 
     /**

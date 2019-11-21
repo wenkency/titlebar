@@ -32,6 +32,14 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
             findViewById(R.id.cl_title_content)
                     .setBackgroundColor(build.mTitleBackgroundColor);
         }
+        // 标题高度
+        if (build.mHeight != 0) {
+            View clContent = findViewById(R.id.cl_title_content);
+            ViewGroup.LayoutParams params = clContent.getLayoutParams();
+            params.height = build.mHeight;
+            clContent.setLayoutParams(params);
+        }
+
         // 左边返回按钮图片
         if (build.mLeftIvResId != 0) {
             ImageView ivBack = findViewById(R.id.iv_title_left);
@@ -320,4 +328,5 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
     public TextView getTitle() {
         return findViewById(R.id.tv_title_center);
     }
+
 }

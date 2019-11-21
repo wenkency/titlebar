@@ -25,4 +25,5 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
     implementation project(path: ':lib-titlebar')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0-rc02'
 }

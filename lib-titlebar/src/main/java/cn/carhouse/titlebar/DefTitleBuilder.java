@@ -24,6 +24,7 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
     View.OnClickListener mLeftClickListener;
     int[] mRightResIcons;
     View.OnClickListener[] mRightResClicks;
+    int mHeight;
 
     public DefTitleBuilder(Activity activity) {
         super(activity);
@@ -129,4 +130,8 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
         return this;
     }
 
+    public DefTitleBuilder setHeight(int height) {
+        mHeight = dip2px(height);
+        return this;
+    }
 }

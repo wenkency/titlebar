@@ -84,7 +84,14 @@ public abstract class TitleBuilder<T extends TitleBar> {
             mActivity.finish();
         }
     }
-
+    public int dip2px(int dip) {
+        if (mActivity == null) {
+            return 0;
+        }
+        // 缩放比例(密度)
+        float density = mActivity.getResources().getDisplayMetrics().density;
+        return (int) (dip * density + 0.5);
+    }
 
     protected abstract T getTitleBar();
 }

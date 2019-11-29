@@ -18,10 +18,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowTitleSize">0.0dip</item>
         <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
-        <item name="android:autoCompleteTextViewStyle">@style/customAutoCompleteTextView</item>
-        <item name="android:checkboxStyle">@style/customCheckBox</item>
-        <item name="android:editTextStyle">@style/customEditText</item>
-        <item name="android:listViewStyle">@style/customListView</item>
         <item name="android:radioButtonStyle">@style/customRadioButton</item>
         <item name="android:windowAnimationStyle">@style/actAnimation</item>
         <item name="android:windowDisablePreview">true</item>

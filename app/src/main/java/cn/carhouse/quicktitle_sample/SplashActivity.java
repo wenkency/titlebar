@@ -1,28 +1,31 @@
 package cn.carhouse.quicktitle_sample;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
+import cn.carhouse.titlebar.DefTitleBar;
+import cn.carhouse.titlebar.DefTitleBuilder;
 
-public class SplashActivity extends BaseActivity{
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(SplashActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+        DefTitleBar titleBar = new DefTitleBuilder(this)
+                .build();
+        titleBar.whiteStyle();
+        titleBar.setTitle("我是白色标题栏");
+        // 标题颜色
+        titleBar.setTitleColor(Color.BLACK);
 
-            }
-        });
 
-        StatusBarUtil.setTransparentForWindow(this);
+    }
 
+    public void toMain(View view) {
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -20,13 +20,13 @@ public class SecondActivity extends BaseActivity {
                 .setHeight(80)
                 .build();
         // 标题文字
-        titleBar.setTitle("我是第二个页面");
+        titleBar.setTitle("我是资源渐变标题栏");
 
         int color = getResources().getColor(R.color.colorAccent);
 
         // 标题的颜色、背景颜色、6.0+状态栏字体是不是黑色
         titleBar.colorStyle(color, Color.WHITE);
-        titleBar.resourceStyle(R.drawable.bg_good_list_gradient,Color.WHITE);
+        titleBar.resourceStyle(R.drawable.bg_good_list_gradient, Color.WHITE);
         // 标题颜色
         titleBar.setTitleColor(Color.WHITE);
 
@@ -36,10 +36,14 @@ public class SecondActivity extends BaseActivity {
         titleBar.setRightIcon(R.mipmap.ic_launcher, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(SecondActivity.this, MainActivity.class);
+                Intent intent = new Intent(SecondActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
     }
 
+    public void toMain(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }

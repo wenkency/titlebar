@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Default">
         <activity
-            android:name=".SplashActivity"
+            android:name=".SplashWhiteStyleActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:hardwareAccelerated="true"
@@ -27,7 +27,7 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ColorStyleActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
@@ -35,7 +35,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".SecondActivity"
+            android:name=".ResourceStyleActivity"
             android:configChanges="locale|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"

@@ -8,7 +8,7 @@ import android.view.View;
 import cn.carhouse.titlebar.DefTitleBar;
 import cn.carhouse.titlebar.DefTitleBuilder;
 
-public class SplashActivity extends BaseActivity {
+public class SplashWhiteStyleActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void toMain(View view) {
-        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        Intent intent = new Intent(SplashWhiteStyleActivity.this, ColorStyleActivity.class);
         startActivity(intent);
     }
 }

@@ -56,11 +56,11 @@ public class TitleBarUtil {
      * @param isResource 是不是资源
      */
     public static void setStatusTranslucent(Activity activity, int color, boolean isResource) {
-        setStatusBar(activity);
         //4.4以下
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return;
         }
+        setStatusBar(activity);
         // 设置为透明的状态栏
         // 5.0以上
         Window window = activity.getWindow();
@@ -100,6 +100,9 @@ public class TitleBarUtil {
      * 浸入式状态栏实现同时取消5.0以上的阴影
      */
     public static void setStatusBar(Activity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         Window window = activity.getWindow();
         // 设置虚拟键盘跟着屏幕自动
         window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,

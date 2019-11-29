@@ -7,16 +7,18 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 
 /**
- * Title
+ * 默认标题
  */
 public abstract class TitleBar<B extends TitleBuilder> {
 
 
     protected TitleViewHelper mViewHelper;
     protected Activity mActivity;
+    protected LinearLayout mWrapParent;
 
     /**
      * Title布局ID
@@ -31,24 +33,8 @@ public abstract class TitleBar<B extends TitleBuilder> {
 
     public void apply(TitleBuilder.TitleParams params) {
         // 1. 标题添加到哪个父布局
-        ViewGroup parent = params.mParent;
         mActivity = params.mActivity;
-        if (parent == null && params.mActivity != null) {
-            try {
-                // 如果用户不写，默认添加到根布局DecorView布局（FrameLayout-->LinearLayout）
-                ViewGroup decorView = (ViewGroup) params.mActivity.getWindow().getDecorView();
-                decorView.setBackgroundColor(Color.TRANSPARENT);
-                parent = (ViewGroup) decorView.getChildAt(0);// LinearLayout
-                // 去掉阴影
-                FrameLayout contentView = decorView.findViewById(android.R.id.content);
-                if (contentView != null) {
-                    contentView.setForeground(new ColorDrawable(Color.TRANSPARENT));
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-
-        }
+        ViewGroup parent = getParent(params);
         if (parent == null) {
             return;
         }
@@ -69,6 +55,41 @@ public abstract class TitleBar<B extends TitleBuilder> {
         }
         // 应用子类构建参数
         applyParams((B) params.mTitleBuild);
+    }
+
+    /**
+     * 找父类
+     */
+    private ViewGroup getParent(TitleBuilder.TitleParams params) {
+        // 1. 有父类直接返回
+        if (params.mParent != null) {
+            return params.mParent;
+        }
+        if (params.mActivity != null) {
+            // 如果用户不写，默认添加到根布局DecorView布局（FrameLayout-->LinearLayout）
+            ViewGroup decorView = (ViewGroup) params.mActivity.getWindow().getDecorView();
+            // 去掉背景色
+            decorView.setBackgroundColor(Color.TRANSPARENT);
+            // 这个是ContentView
+            FrameLayout contentView = decorView.findViewById(android.R.id.content);
+            if (contentView != null) {
+                // 去掉阴影
+                contentView.setForeground(new ColorDrawable(Color.TRANSPARENT));
+                View child = contentView.getChildAt(0);
+                if (child != null) {
+                    contentView.removeView(child);
+                }
+                mWrapParent = new LinearLayout(params.mActivity);
+                mWrapParent.setLayoutParams(child.getLayoutParams());
+                mWrapParent.setOrientation(LinearLayout.VERTICAL);
+                if (child != null) {
+                    mWrapParent.addView(child);
+                }
+                contentView.addView(mWrapParent);
+                return mWrapParent;
+            }
+        }
+        return null;
     }
 
 

@@ -55,7 +55,7 @@ public class TitleBarUtil {
      * @param color
      * @param isResource 是不是资源
      */
-    public static void setStatusTranslucent(Activity activity, int color, boolean isResource) {
+    public static void setStatusTranslucent(final Activity activity,final int color,final boolean isResource) {
         //4.4以下
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return;
@@ -63,10 +63,21 @@ public class TitleBarUtil {
         setStatusBar(activity);
         // 设置为透明的状态栏
         // 5.0以上
-        Window window = activity.getWindow();
+       final Window window = activity.getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (isResource) {
-                window.setStatusBarColor(Color.TRANSPARENT);
+                // android系统级的资源id得这么拿,不然拿不到
+                activity.getWindow().getDecorView().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int identifier = activity.getResources().getIdentifier("statusBarBackground",
+                                "id", "android");
+                        View statusBarView = window.findViewById(identifier);
+                        if (statusBarView != null) {
+                            statusBarView.setBackgroundResource(color);
+                        }
+                    }
+                });
             } else {
                 window.setStatusBarColor(color);
             }

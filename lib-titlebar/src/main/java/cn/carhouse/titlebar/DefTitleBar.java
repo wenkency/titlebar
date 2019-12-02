@@ -260,7 +260,7 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
      * @param windowColor 背景颜色
      */
     public void resourceStyle(int resId, int windowColor) {
-        this.resourceStyle(resId, windowColor, false);
+        this.resourceStyle(resId, windowColor, false, false);
     }
 
     /**
@@ -270,7 +270,7 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
      * @param windowColor 背景颜色
      * @param isDark      状态栏字体是不是黑色
      */
-    public void resourceStyle(int resId, int windowColor, boolean isDark) {
+    public void resourceStyle(int resId, int windowColor, boolean isDark, boolean isTrans) {
         // 1. 标题颜色
         setRootBackgroundResource(resId);
         // 2. 标题颜色是透明的
@@ -278,14 +278,18 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 3. 设置标题和颜色
             TitleBarUtil.setStatusTranslucent(mActivity, resId, true);
-            // 4. 设置Activity透明
-            TitleBarUtil.setTitlePadding(getContentView());
-            fitsSystem(false);
+            fitsSystem(true);
+            if (isTrans) {
+                // 4. 设置Activity透明
+                TitleBarUtil.setTitlePadding(getContentView());
+                fitsSystem(false);
+            }
             // 5. 状态栏字体颜色
             TitleBarUtil.setMStateBarFontColor(mActivity, isDark);
-        }else {
+        } else {
             fitsSystem(true);
         }
+        fitsSystem(true);
         // 最后设置背景
         mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(windowColor));
     }

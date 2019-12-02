@@ -54,8 +54,8 @@ implementation 'com.github.wenkency:titlebar:(最新releases版本)'
 
 <img src="screenshot/image.jpg" width="360px"/>
 
-<img src="screenshot/image1.jpg" width="360px"/>
+<img src="screenshot/image1.png" width="360px"/>
 
 <img src="screenshot/image3.jpg" width="360px"/>
 
-<img src="screenshot/image3.jpg" width="360px"/>
+<img src="screenshot/image2.png" width="360px"/>

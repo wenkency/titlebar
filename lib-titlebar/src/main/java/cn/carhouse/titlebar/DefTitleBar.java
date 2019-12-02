@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cn.carhouse.titlebar.utils.TitleBarUtil;
+
 
 /**
  * 默认标题

@@ -1,4 +1,4 @@
-package cn.carhouse.titlebar;
+package cn.carhouse.titlebar.utils;
 
 import android.app.Activity;
 import android.content.Context;

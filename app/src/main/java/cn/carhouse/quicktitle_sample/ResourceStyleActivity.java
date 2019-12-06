@@ -16,7 +16,7 @@ public class ResourceStyleActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         DefTitleBar titleBar = new DefTitleBuilder(this)
                 // 返回按钮
-                .setLeftRes(R.drawable.ic_title_back)
+                .setBackImageRes(R.drawable.ic_title_back)
                 .build();
         // 标题文字
         titleBar.setTitle("我是资源渐变标题栏");

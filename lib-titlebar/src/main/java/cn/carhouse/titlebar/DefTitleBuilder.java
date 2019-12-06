@@ -13,6 +13,7 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
     // 2.所有效果的放置
     CharSequence mTitle;
     int mLeftIvResId;// 左边imageView的资源ID
+    int mLeftIvFilterColor;// 左边imageView的过滤色
     int mLeftLayoutId;// 替换左边布局的资源ID
     View mLeftView;// 替换左边View
     int mRightLayoutId;// 替换右边边布局的资源ID
@@ -124,9 +125,19 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
         return this;
     }
 
-
-    public DefTitleBuilder setLeftRes(int resId) {
+    /**
+     * 左边返回按钮
+     */
+    public DefTitleBuilder setBackImageRes(int resId) {
         mLeftIvResId = resId;
+        return this;
+    }
+
+    /**
+     * 左边返回按钮图片过滤色，控制返回按钮的颜色
+     */
+    public DefTitleBuilder setBackImageFilterColor(int color) {
+        mLeftIvFilterColor = color;
         return this;
     }
 

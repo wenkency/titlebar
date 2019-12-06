@@ -46,6 +46,9 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
         if (build.mLeftIvResId != 0) {
             ImageView ivBack = findViewById(R.id.iv_title_left);
             ivBack.setImageResource(build.mLeftIvResId);
+            if (build.mLeftIvFilterColor != 0) {
+                ivBack.setColorFilter(build.mLeftIvFilterColor);
+            }
         }
         // 3. 左边图片返回默认点击事件
         setOnClickListener(R.id.iv_title_left, new View.OnClickListener() {
@@ -193,6 +196,26 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
      */
     public void setTitleBackgroundColor(int color) {
         findViewById(R.id.cl_title_content).setBackgroundColor(color);
+    }
+
+    /**
+     * 设置标题返回图片过滤色
+     */
+    public void setBackImageColorFilter(int color) {
+        ImageView ivBack = findViewById(R.id.iv_title_left);
+        if (ivBack != null) {
+            ivBack.setColorFilter(color);
+        }
+    }
+
+    /**
+     * 设置标题返回图片
+     */
+    public void setBackImageRes(int res) {
+        ImageView ivBack = findViewById(R.id.iv_title_left);
+        if (ivBack != null) {
+            ivBack.setImageResource(res);
+        }
     }
 
     /**

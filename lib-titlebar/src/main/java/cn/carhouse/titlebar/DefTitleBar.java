@@ -106,6 +106,15 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
     }
 
     /**
+     * 清除返回按钮
+     */
+    public DefTitleBar clearBackImage() {
+        LinearLayout leftLayout = findViewById(R.id.ll_title_left);
+        leftLayout.removeAllViews();
+        return this;
+    }
+
+    /**
      * 替换右边的View
      */
     public DefTitleBar setRightView(int rightResId) {
@@ -377,5 +386,6 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
     public TextView getTitle() {
         return findViewById(R.id.tv_title_center);
     }
+
 
 }

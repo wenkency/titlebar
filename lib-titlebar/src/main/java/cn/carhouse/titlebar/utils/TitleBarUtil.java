@@ -168,23 +168,9 @@ public class TitleBarUtil {
             if (isPadding) {
                 titleView.setPadding(0, getStatusBarHeight(activity), 0, 0);
             }
-
         }
     }
 
-    /**
-     * 设置TitleBar的高度
-     */
-    public static void setTitleBarHeight(Activity activity, View titleView) {
-        if (titleView == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ViewGroup.LayoutParams lp = titleView.getLayoutParams();
-            lp.height = lp.height + getStatusBarHeight(activity);
-            titleView.setLayoutParams(lp);
-        }
-    }
 
     /**
      * 获取状态栏的高度
@@ -198,17 +184,6 @@ public class TitleBarUtil {
         return resources.getDimensionPixelOffset(identifier);
     }
 
-    /**
-     * 获取状态栏的高度
-     */
-    public static int getCompatStatusBarHeight(Context context) {
-        if (context == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return 0;
-        }
-        Resources resources = context.getResources();
-        int identifier = resources.getIdentifier("status_bar_height", "dimen", "android");
-        return resources.getDimensionPixelOffset(identifier);
-    }
 
 
 }

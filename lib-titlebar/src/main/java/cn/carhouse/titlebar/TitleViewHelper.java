@@ -80,4 +80,11 @@ public class TitleViewHelper {
             tv.setTextColor(color);
         }
     }
+
+    public void setBackgroundColor(int viewId, int color) {
+        View view = findViewById(viewId);
+        if (view != null) {
+            view.setBackgroundColor(color);
+        }
+    }
 }

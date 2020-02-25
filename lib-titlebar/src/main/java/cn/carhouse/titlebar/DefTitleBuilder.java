@@ -5,51 +5,77 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * 默认的标题建造器
+ * 构建通用标题栏
  */
-public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
+public class DefTitleBuilder {
 
-
-    // 2.所有效果的放置
-    CharSequence mTitle;
-    int mLeftIvResId;// 左边imageView的资源ID
-    int mLeftIvFilterColor;// 左边imageView的过滤色
-    int mLeftLayoutId;// 替换左边布局的资源ID
-    View mLeftView;// 替换左边View
-    int mRightLayoutId;// 替换右边边布局的资源ID
-    View mRightView;// 替换右边View
-    int mRootBackgroundColor; // 根布局背景颜色
-    int mTitleBackgroundColor;// 标题布局背景颜色
-    CharSequence mRightText;
-    View.OnClickListener mRightTextClickListener;
-    View.OnClickListener mLeftClickListener;
-    int[] mRightResIcons;
-    View.OnClickListener[] mRightResClicks;
-    int mHeight;
-
-    public DefTitleBuilder(Activity activity) {
-        super(activity);
-    }
+    private ITitleParams mParams;
 
     public DefTitleBuilder(Activity activity, ViewGroup parent) {
-        super(activity, parent);
+        mParams = new ITitleParams(activity, parent);
     }
 
-    public static DefTitleBuilder create(Activity activity) {
-        return new DefTitleBuilder(activity);
+    public DefTitleBuilder(Activity activity) {
+        this(activity, null);
     }
 
-    @Override
-    protected DefTitleBar getTitleBar() {
-        return new DefTitleBar();
+    public DefTitleBar build() {
+        DefTitleBar titleBar = new DefTitleBar();
+        titleBar.apply(mParams);
+        return titleBar;
     }
 
+    /**
+     * 构建参数
+     */
+    static class ITitleParams {
+        // 所有标题配置信息
+        Activity mActivity;
+        ViewGroup mParent;
+
+        // 标题文字
+        CharSequence mTitle;
+        // 标题高度
+        int mHeight;
+        // 左边imageView的资源ID
+        int mLeftIvResId;
+        // 左边imageView的过滤色
+        int mLeftIvFilterColor;
+        // 替换左边布局的资源ID
+        int mLeftLayoutId;
+        // 替换左边View
+        View mLeftView;
+        // 替换右边边布局的资源ID
+        int mRightLayoutId;
+        // 替换右边View
+        View mRightView;
+        // 根布局背景颜色
+        int mRootBackgroundColor;
+        // 标题布局背景颜色
+        int mTitleBackgroundColor;
+        // 右边文字
+        CharSequence mRightText;
+        // 右边点击事件
+        View.OnClickListener mRightTextClickListener;
+        // 左边点击事件
+        View.OnClickListener mLeftClickListener;
+        // 右边图片资源集合
+        int[] mRightResIcons;
+        // 右边图片资源集合点击事件
+        View.OnClickListener[] mRightResClicks;
+
+
+        public ITitleParams(Activity activity, ViewGroup parent) {
+            this.mActivity = activity;
+            this.mParent = parent;
+        }
+    }
 
     /**
      * 设置Title
      */
     public DefTitleBuilder setTitle(CharSequence title) {
-        mTitle = title;
+        mParams.mTitle = title;
         return this;
     }
 
@@ -57,7 +83,7 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 设置Title根背景颜色
      */
     public DefTitleBuilder setRootBackgroundColor(int color) {
-        mRootBackgroundColor = color;
+        mParams.mRootBackgroundColor = color;
         return this;
     }
 
@@ -65,22 +91,22 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 设置Title颜色
      */
     public DefTitleBuilder setTitleBackgroundColor(int color) {
-        mTitleBackgroundColor = color;
+        mParams.mTitleBackgroundColor = color;
         return this;
     }
 
     public DefTitleBuilder setRightText(CharSequence text) {
-        mRightText = text;
+        mParams.mRightText = text;
         return this;
     }
 
     public DefTitleBuilder setRightTextClick(View.OnClickListener listener) {
-        mRightTextClickListener = listener;
+        mParams.mRightTextClickListener = listener;
         return this;
     }
 
     public DefTitleBuilder setLeftClick(View.OnClickListener listener) {
-        mLeftClickListener = listener;
+        mParams.mLeftClickListener = listener;
         return this;
     }
 
@@ -88,7 +114,7 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 添加左边的View
      */
     public DefTitleBuilder setLeftView(int leftLayoutId) {
-        mLeftLayoutId = leftLayoutId;
+        mParams.mLeftLayoutId = leftLayoutId;
         return this;
     }
 
@@ -96,7 +122,7 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 添加左边的View
      */
     public DefTitleBuilder setLeftView(View leftView) {
-        mLeftView = leftView;
+        mParams.mLeftView = leftView;
         return this;
     }
 
@@ -104,7 +130,7 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 添加右边的View
      */
     public DefTitleBuilder setRightView(int rightLayoutId) {
-        mRightLayoutId = rightLayoutId;
+        mParams.mRightLayoutId = rightLayoutId;
         return this;
     }
 
@@ -112,8 +138,8 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 添加右边的View
      */
     public DefTitleBuilder setRightIcons(int[] rightResIcons, View.OnClickListener... rightResClicks) {
-        mRightResIcons = rightResIcons;
-        mRightResClicks = rightResClicks;
+        mParams.mRightResIcons = rightResIcons;
+        mParams.mRightResClicks = rightResClicks;
         return this;
     }
 
@@ -121,7 +147,7 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 添加右边的View
      */
     public DefTitleBuilder setRightView(View rightView) {
-        mRightView = rightView;
+        mParams.mRightView = rightView;
         return this;
     }
 
@@ -129,7 +155,7 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 左边返回按钮
      */
     public DefTitleBuilder setBackImageRes(int resId) {
-        mLeftIvResId = resId;
+        mParams.mLeftIvResId = resId;
         return this;
     }
 
@@ -137,12 +163,24 @@ public class DefTitleBuilder extends TitleBuilder<DefTitleBar> {
      * 左边返回按钮图片过滤色，控制返回按钮的颜色
      */
     public DefTitleBuilder setBackImageFilterColor(int color) {
-        mLeftIvFilterColor = color;
+        mParams.mLeftIvFilterColor = color;
         return this;
     }
 
+    /**
+     * 设置标题默认高度
+     */
     public DefTitleBuilder setHeight(int height) {
-        mHeight = dip2px(height);
+        mParams.mHeight = dip2px(height);
         return this;
+    }
+
+    public int dip2px(int dip) {
+        if (mParams == null || mParams.mActivity == null) {
+            return 0;
+        }
+        // 缩放比例(密度)
+        float density = mParams.mActivity.getResources().getDisplayMetrics().density;
+        return (int) (dip * density + 0.5);
     }
 }

@@ -55,24 +55,27 @@ public class TitleBarUtil {
      * @param color
      * @param isResource 是不是资源
      */
-    public static void setStatusTranslucent(final Activity activity,final int color,final boolean isResource) {
+    public static void setStatusTranslucent(final Activity activity, final int color, final boolean isResource) {
         //4.4以下
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return;
         }
-        setStatusBar(activity);
         // 设置为透明的状态栏
-        // 5.0以上
-       final Window window = activity.getWindow();
+        setStatusBar(activity);
+
+        final Window window = activity.getWindow();
+        // 获取到decorView
+        ViewGroup decorView = (ViewGroup) window.getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (isResource) {
                 // android系统级的资源id得这么拿,不然拿不到
-                activity.getWindow().getDecorView().post(new Runnable() {
+                decorView.post(new Runnable() {
                     @Override
                     public void run() {
-                        int identifier = activity.getResources().getIdentifier("statusBarBackground",
-                                "id", "android");
-                        View statusBarView = window.findViewById(identifier);
+                        int viewId = activity.getResources()
+                                .getIdentifier("statusBarBackground",
+                                        "id", "android");
+                        View statusBarView = window.findViewById(viewId);
                         if (statusBarView != null) {
                             statusBarView.setBackgroundResource(color);
                         }
@@ -82,7 +85,7 @@ public class TitleBarUtil {
                 window.setStatusBarColor(color);
             }
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_VISIBLE);
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_VISIBLE);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //4.4- 5.0之间的
@@ -94,8 +97,7 @@ public class TitleBarUtil {
                 view.setBackgroundColor(color);
             }
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(activity)));
-            // 获取到decorView
-            ViewGroup decorView = (ViewGroup) window.getDecorView();
+
             decorView.addView(view);
         }
     }
@@ -183,7 +185,6 @@ public class TitleBarUtil {
         int identifier = resources.getIdentifier("status_bar_height", "dimen", "android");
         return resources.getDimensionPixelOffset(identifier);
     }
-
 
 
 }

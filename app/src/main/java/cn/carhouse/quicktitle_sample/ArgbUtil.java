@@ -1,4 +1,4 @@
-package cn.carhouse.titlebar.utils;
+package cn.carhouse.quicktitle_sample;
 
 import android.annotation.SuppressLint;
 import android.view.View;

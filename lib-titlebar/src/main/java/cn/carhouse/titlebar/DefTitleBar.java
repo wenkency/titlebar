@@ -1,82 +1,178 @@
 package cn.carhouse.titlebar;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.carhouse.titlebar.utils.TitleBarUtil;
 
-
 /**
- * 默认标题
+ * 通用的标题栏
+ * 1. apply方法
+ * 2. applyParams方法
  */
-public class DefTitleBar extends TitleBar<DefTitleBuilder> {
-    @Override
+public class DefTitleBar {
+
+    private Activity mActivity;
+    private LinearLayout mWrapParent;
+    private TitleViewHelper mViewHelper;
+
+    /**
+     * 这个是标题布局，子类可以复写
+     */
     protected int getBarLayoutId() {
         return R.layout.base_layout_title_bar;
     }
 
-    @Override
-    protected void applyParams(final DefTitleBuilder build) {
+
+    /**
+     * 通用设置
+     */
+    public void apply(DefTitleBuilder.ITitleParams params) {
+        // 1. 非空校验
+        if (params == null || params.mActivity == null) {
+            return;
+        }
+        mActivity = params.mActivity;
+        // 2. 找父布局
+        ViewGroup parent = getParent(params);
+        if (parent == null) {
+            return;
+        }
+        // 3. 加载Title
+        mViewHelper = new TitleViewHelper(params.mActivity, parent, getBarLayoutId());
+        parent.addView(mViewHelper.getContentView(), 0);
+        parent.setBackgroundColor(Color.TRANSPARENT);
+        // 4. 设置默认Title参数配置
+        applyParams(params);
+    }
+
+    /**
+     * 这是标题参数配置，子类可以复写
+     *
+     * @param params
+     */
+    protected void applyParams(final DefTitleBuilder.ITitleParams params) {
+        if (mViewHelper == null || params == null) {
+            return;
+        }
         // 1. 根背景颜色
-        if (build.mRootBackgroundColor != 0) {
-            findViewById(R.id.ll_title_root)
-                    .setBackgroundColor(build.mRootBackgroundColor);
+        if (params.mRootBackgroundColor != 0) {
+            mViewHelper.setBackgroundColor(R.id.ll_title_root, params.mRootBackgroundColor);
         }
         // 2. 标题背景颜色
-        if (build.mTitleBackgroundColor != 0) {
-            findViewById(R.id.cl_title_content)
-                    .setBackgroundColor(build.mTitleBackgroundColor);
+        if (params.mTitleBackgroundColor != 0) {
+            mViewHelper.setBackgroundColor(R.id.cl_title_content, params.mTitleBackgroundColor);
         }
-        // 标题高度
-        if (build.mHeight != 0) {
-            View clContent = findViewById(R.id.cl_title_content);
-            ViewGroup.LayoutParams params = clContent.getLayoutParams();
-            params.height = build.mHeight;
-            clContent.setLayoutParams(params);
+        // 3. 标题高度
+        if (params.mHeight != 0) {
+            View clTitleView = mViewHelper.findViewById(R.id.cl_title_content);
+            ViewGroup.LayoutParams lp = clTitleView.getLayoutParams();
+            lp.height = params.mHeight;
+            clTitleView.setLayoutParams(lp);
         }
 
-        // 左边返回按钮图片
-        if (build.mLeftIvResId != 0) {
-            ImageView ivBack = findViewById(R.id.iv_title_left);
-            ivBack.setImageResource(build.mLeftIvResId);
-            if (build.mLeftIvFilterColor != 0) {
-                ivBack.setColorFilter(build.mLeftIvFilterColor);
+        // 4. 左边返回按钮图片
+        if (params.mLeftIvResId != 0) {
+            ImageView ivBack = mViewHelper.findViewById(R.id.iv_title_left);
+            ivBack.setImageResource(params.mLeftIvResId);
+            if (params.mLeftIvFilterColor != 0) {
+                ivBack.setColorFilter(params.mLeftIvFilterColor);
             }
         }
-        // 3. 左边图片返回默认点击事件
+        // 5. 左边图片返回默认点击事件
         setOnClickListener(R.id.iv_title_left, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                build.finish();
+                finish();
             }
         });
-        if (build.mLeftClickListener != null) {
-            setOnClickListener(R.id.iv_title_left, build.mLeftClickListener);
+        if (params.mLeftClickListener != null) {
+            setOnClickListener(R.id.iv_title_left, params.mLeftClickListener);
         }
         // 替换左边的View自定义的那种
-        setLeftView(build.mLeftLayoutId);
-        setLeftView(build.mLeftView);
+        setLeftView(params.mLeftLayoutId);
+        setLeftView(params.mLeftView);
         // 替换右边的View自定义的那种
-        setRightView(build.mRightLayoutId);
-        setRightView(build.mRightView);
+        setRightView(params.mRightLayoutId);
+        setRightView(params.mRightView);
         // 根据资源设置右边的图片和点击事件
-        setRightIcons(build.mRightResIcons, build.mRightResClicks);
+        setRightIcons(params.mRightResIcons, params.mRightResClicks);
         // 设置Title的文本
-        setText(R.id.tv_title_center, build.mTitle);
+        setText(R.id.tv_title_center, params.mTitle);
         // 设置右边的文本
-        setText(R.id.tv_title_right, build.mRightText);
-        if (build.mRightTextClickListener != null) {
-            setOnClickListener(R.id.tv_title_right, build.mRightTextClickListener);
+        setText(R.id.tv_title_right, params.mRightText);
+        if (params.mRightTextClickListener != null) {
+            setOnClickListener(R.id.tv_title_right, params.mRightTextClickListener);
+        }
+
+    }
+
+    public void finish() {
+        if (mActivity != null) {
+            mActivity.finish();
         }
     }
 
+    /**
+     * 找父类
+     */
+    private ViewGroup getParent(DefTitleBuilder.ITitleParams params) {
+        // 1. 有父类直接返回
+        if (params.mParent != null) {
+            return params.mParent;
+        }
+        if (params.mActivity != null) {
+            // 如果用户不写，默认添加到根布局DecorView布局（FrameLayout-->LinearLayout）
+            ViewGroup decorView = (ViewGroup) params.mActivity.getWindow().getDecorView();
+            // 去掉背景色
+            decorView.setBackgroundColor(Color.TRANSPARENT);
+            // 这个是ContentView
+            FrameLayout contentView = decorView.findViewById(android.R.id.content);
+            if (contentView != null) {
+                // 去掉阴影
+                contentView.setForeground(new ColorDrawable(Color.TRANSPARENT));
+                View child = contentView.getChildAt(0);
+                if (child != null) {
+                    contentView.removeView(child);
+                }
+                mWrapParent = new LinearLayout(params.mActivity);
+                mWrapParent.setLayoutParams(child.getLayoutParams());
+                mWrapParent.setOrientation(LinearLayout.VERTICAL);
+                if (child != null) {
+                    mWrapParent.addView(child);
+                }
+                contentView.addView(mWrapParent);
+                return mWrapParent;
+            }
+        }
+        return null;
+    }
+
+
+    public <T extends View> T findViewById(int viewId) {
+        return mViewHelper.findViewById(viewId);
+    }
+
+    public void setOnClickListener(int viewId, View.OnClickListener onClickListener) {
+        mViewHelper.setOnClickListener(viewId, onClickListener);
+    }
+
+    public void setText(int viewId, CharSequence text) {
+        mViewHelper.setText(viewId, text);
+    }
+
+    public void setTextColor(int viewId, int color) {
+        mViewHelper.setTextColor(viewId, color);
+    }
 
     /**
      * 替换左边的View
@@ -98,8 +194,10 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
     public DefTitleBar setLeftView(View leftView) {
         if (leftView != null) {
             LinearLayout leftLayout = findViewById(R.id.ll_title_left);
-            leftLayout.removeAllViews();
-            leftLayout.addView(leftView);
+            if (leftLayout != null) {
+                leftLayout.removeAllViews();
+                leftLayout.addView(leftView);
+            }
         }
         return this;
 
@@ -110,7 +208,9 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
      */
     public DefTitleBar clearBackImage() {
         LinearLayout leftLayout = findViewById(R.id.ll_title_left);
-        leftLayout.removeAllViews();
+        if (leftLayout != null) {
+            leftLayout.removeAllViews();
+        }
         return this;
     }
 
@@ -121,9 +221,9 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
         if (rightResId != 0) {
             LinearLayout rightLayout = findViewById(R.id.ll_title_right);
             rightLayout.removeAllViews();
-            View leftView = LayoutInflater.from(rightLayout.getContext())
+            View rightView = LayoutInflater.from(rightLayout.getContext())
                     .inflate(rightResId, rightLayout, false);
-            rightLayout.addView(leftView);
+            rightLayout.addView(rightView);
         }
         return this;
     }
@@ -387,5 +487,12 @@ public class DefTitleBar extends TitleBar<DefTitleBuilder> {
         return findViewById(R.id.tv_title_center);
     }
 
-
+    public int dip2px(int dip) {
+        if (mActivity == null) {
+            return 0;
+        }
+        // 缩放比例(密度)
+        float density = mActivity.getResources().getDisplayMetrics().density;
+        return (int) (dip * density + 0.5);
+    }
 }

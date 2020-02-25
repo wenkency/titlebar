@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.carhouse.titlebar.utils;
+package cn.carhouse.quicktitle_sample;
 
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;

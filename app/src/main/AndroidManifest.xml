@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.carhouse.quicktitle_sample">
 
     <application
@@ -9,6 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Default">
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="3.4" />
         <activity
             android:name=".SplashWhiteStyleActivity"
             android:alwaysRetainTaskState="true"
@@ -32,7 +36,8 @@
             android:exported="false"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".ResourceStyleActivity"
@@ -40,7 +45,8 @@
             android:exported="false"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>

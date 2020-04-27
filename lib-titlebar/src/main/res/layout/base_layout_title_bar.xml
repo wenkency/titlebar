@@ -80,10 +80,8 @@
                 android:gravity="center"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="右边"
                 android:textColor="@color/titleColorRightText"
-                android:textSize="15dp"
-                android:visibility="gone" />
+                android:textSize="15dp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

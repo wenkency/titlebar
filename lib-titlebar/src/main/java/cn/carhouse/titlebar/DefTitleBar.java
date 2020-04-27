@@ -36,7 +36,7 @@ public class DefTitleBar {
     /**
      * 通用设置
      */
-    public void apply(DefTitleBuilder.ITitleParams params) {
+    public void apply(DefTitleBuilder params) {
         // 1. 非空校验
         if (params == null || params.mActivity == null) {
             return;
@@ -60,7 +60,7 @@ public class DefTitleBar {
      *
      * @param params
      */
-    protected void applyParams(final DefTitleBuilder.ITitleParams params) {
+    protected void applyParams(final DefTitleBuilder params) {
         if (mViewHelper == null || params == null) {
             return;
         }
@@ -125,7 +125,7 @@ public class DefTitleBar {
     /**
      * 找父类
      */
-    private ViewGroup getParent(DefTitleBuilder.ITitleParams params) {
+    private ViewGroup getParent(DefTitleBuilder params) {
         // 1. 有父类直接返回
         if (params.mParent != null) {
             return params.mParent;
@@ -212,6 +212,40 @@ public class DefTitleBar {
             leftLayout.removeAllViews();
         }
         return this;
+    }
+
+    public DefTitleBar setRightText(CharSequence text, View.OnClickListener onClickListener) {
+        TextView tv = findViewById(R.id.tv_title_right);
+        if (tv != null) {
+            tv.setText(text);
+            tv.setOnClickListener(onClickListener);
+        }
+        return this;
+    }
+
+    public DefTitleBar setRightText(CharSequence text) {
+        return setRightText(text, null);
+    }
+
+    public DefTitleBar setRightTextClick(View.OnClickListener onClickListener) {
+        TextView tv = findViewById(R.id.tv_title_right);
+        if (tv != null) {
+            tv.setOnClickListener(onClickListener);
+        }
+        return this;
+    }
+
+    public DefTitleBar setRightTextColor(int color) {
+        TextView tv = findViewById(R.id.tv_title_right);
+        if (tv != null) {
+            tv.setTextColor(color);
+        }
+        return this;
+    }
+
+    public TextView getRightText() {
+        TextView tv = findViewById(R.id.tv_title_right);
+        return tv;
     }
 
     /**

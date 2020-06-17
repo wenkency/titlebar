@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 /**
  * 构建通用标题栏
  */
 public class DefTitleBuilder {
-    
+
     // 所有标题配置信息
     Activity mActivity;
     ViewGroup mParent;
@@ -43,9 +45,9 @@ public class DefTitleBuilder {
     // 右边图片资源集合点击事件
     View.OnClickListener[] mRightResClicks;
 
-    public DefTitleBuilder(Activity activity, ViewGroup parent) {
-        this. mActivity=activity;
-        this.mParent=parent;
+    public DefTitleBuilder(@NonNull Activity activity, ViewGroup parent) {
+        this.mActivity = activity;
+        this.mParent = parent;
     }
 
     public DefTitleBuilder(Activity activity) {

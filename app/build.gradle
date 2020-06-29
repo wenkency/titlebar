@@ -4,6 +4,7 @@ def app = rootProject.ext.app
 def versions = rootProject.ext.versions
 android {
     compileSdkVersion app.compileSdkVersion
+    buildToolsVersion app.buildToolsVersion
 
     defaultConfig {
         minSdkVersion app.minSdkVersion
@@ -25,5 +26,4 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
     implementation project(path: ':lib-titlebar')
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0-rc02'
 }

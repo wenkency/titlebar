@@ -15,7 +15,7 @@ allprojects {
 	}
 
 
-implementation 'com.github.wenkency:titlebar:1.7.0'
+implementation 'com.github.wenkency:titlebar:1.8.0'
 
 ```
 

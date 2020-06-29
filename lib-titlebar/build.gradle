@@ -7,6 +7,7 @@ def app = rootProject.ext.app
 def versions = rootProject.ext.versions
 android {
     compileSdkVersion app.compileSdkVersion
+    buildToolsVersion app.buildToolsVersion
 
     defaultConfig {
         minSdkVersion app.minSdkVersion

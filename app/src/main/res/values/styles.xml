@@ -20,6 +20,7 @@
         <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
         <item name="android:radioButtonStyle">@style/customRadioButton</item>
         <item name="android:windowAnimationStyle">@style/actAnimation</item>
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 

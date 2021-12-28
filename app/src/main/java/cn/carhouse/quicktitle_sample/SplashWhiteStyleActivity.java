@@ -20,7 +20,7 @@ public class SplashWhiteStyleActivity extends BaseActivity {
         titleBar.whiteStyle();
         titleBar.clearBackImage();
         titleBar.setTitle("我是白色标题栏");
-        // 标题颜色
+        // 标题文本颜色
         titleBar.setTitleColor(Color.BLACK);
 
 

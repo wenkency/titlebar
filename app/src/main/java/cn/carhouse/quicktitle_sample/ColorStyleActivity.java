@@ -21,17 +21,11 @@ public class ColorStyleActivity extends BaseActivity {
                 .build();
         // 标题文字
         titleBar.setTitle("我是颜色标题栏");
-
         int color = getResources().getColor(R.color.colorAccent);
-
         // 标题的颜色、背景颜色、6.0+状态栏字体是不是黑色
         titleBar.colorStyle(color, Color.WHITE);
-        // titleBar.resourceStyle(R.drawable.bg_good_list_gradient,Color.WHITE);
-        // 标题颜色
+        // 标题文本颜色
         titleBar.setTitleColor(Color.WHITE);
-
-        // titleBar.whiteStyle();
-
         // 右边图片及点击事件
         titleBar.setRightIcon(R.mipmap.ic_launcher, new View.OnClickListener() {
             @Override

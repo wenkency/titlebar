@@ -1,8 +1,15 @@
-apply plugin: 'com.android.library'
-
 // 远程仓库
 //apply plugin: 'com.github.dcendents.android-maven'
 //group = 'com.github.wenkency'
+
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+group = 'com.github.wenkency'
+version = '2.0.2'
+
+
 def app = rootProject.ext.app
 def versions = rootProject.ext.versions
 android {
@@ -10,8 +17,8 @@ android {
 
     defaultConfig {
         minSdkVersion app.minSdkVersion
-        versionCode 201
-        versionName "2.0.1"
+        versionCode 202
+        versionName "2.0.2"
     }
 
     buildTypes {

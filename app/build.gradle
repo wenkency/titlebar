@@ -23,7 +23,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.appcompat:appcompat-resources:${versions.appcompat}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
     implementation project(path: ':lib-titlebar')
 }

@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 group = 'com.github.wenkency'
-version = '2.0.4'
+version = '2.0.5'
 
 def app = rootProject.ext.app
 def versions = rootProject.ext.versions
@@ -15,8 +15,8 @@ android {
     defaultConfig {
         minSdkVersion app.minSdkVersion
         targetSdkVersion app.targetSdkVersion
-        versionCode 204
-        versionName "2.0.4"
+        versionCode 205
+        versionName "2.0.5"
     }
     buildTypes {
         release {
@@ -29,6 +29,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly "androidx.appcompat:appcompat:${versions.appcompat}"
-    compileOnly "androidx.appcompat:appcompat-resources:${versions.appcompat}"
     compileOnly "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
 }

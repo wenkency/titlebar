@@ -4,7 +4,6 @@ def app = rootProject.ext.app
 def versions = rootProject.ext.versions
 android {
     compileSdkVersion app.compileSdkVersion
-    buildToolsVersion app.buildToolsVersion
 
     defaultConfig {
         minSdkVersion app.minSdkVersion
@@ -24,6 +23,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.appcompat:appcompat-resources:${versions.appcompat}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
     implementation project(path: ':lib-titlebar')
 }

@@ -6,6 +6,7 @@ plugins {
 group = 'com.github.wenkency'
 version = '2.0.5'
 
+
 def app = rootProject.ext.app
 def versions = rootProject.ext.versions
 
@@ -30,4 +31,18 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly "androidx.appcompat:appcompat:${versions.appcompat}"
     compileOnly "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.wenkency'
+                artifactId = 'android-titilebar'
+                version = '2.0.5'
+            }
+        }
+    }
 }

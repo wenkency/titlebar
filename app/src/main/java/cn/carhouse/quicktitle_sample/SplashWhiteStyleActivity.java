@@ -18,8 +18,8 @@ public class SplashWhiteStyleActivity extends BaseActivity {
         DefTitleBar titleBar = new DefTitleBuilder(this)
                 .setBackImageRes(R.drawable.ic_title_back)
                 .build();
-        titleBar.whiteStyle(true);
-        //titleBar.colorStyle(Color.WHITE, Color.TRANSPARENT, true, true,false);
+        // titleBar.whiteStyle(true);
+        titleBar.colorStyle(Color.WHITE, Color.TRANSPARENT, true, true,false);
         titleBar.clearBackImage();
         titleBar.setTitle("我是白色标题栏");
         // 标题文本颜色

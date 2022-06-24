@@ -1,2 +1,2 @@
 include ':app', ':lib-titlebar'
-rootProject.name='QuickTitle'
+rootProject.name='titlebar'

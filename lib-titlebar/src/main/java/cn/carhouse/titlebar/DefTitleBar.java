@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,9 @@ import cn.carhouse.titlebar.utils.TitleBarUtil;
 public class DefTitleBar {
 
     private Activity mActivity;
-    private LinearLayout mWrapParent;
+    private View mChild;
     private TitleViewHelper mViewHelper;
+    private int mTitleHeight;
 
     /**
      * 这个是标题布局，子类可以复写
@@ -42,6 +44,7 @@ public class DefTitleBar {
             return;
         }
         mActivity = params.mActivity;
+        mTitleHeight = params.mHeight;
         // 2. 找父布局
         ViewGroup parent = getParent(params);
         if (parent == null) {
@@ -144,14 +147,15 @@ public class DefTitleBar {
                 if (child != null) {
                     contentView.removeView(child);
                 }
-                mWrapParent = new LinearLayout(params.mActivity);
-                mWrapParent.setLayoutParams(child.getLayoutParams());
-                mWrapParent.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout wrapParent = new LinearLayout(params.mActivity);
+                wrapParent.setOrientation(LinearLayout.VERTICAL);
                 if (child != null) {
-                    mWrapParent.addView(child);
+                    wrapParent.setLayoutParams(child.getLayoutParams());
+                    wrapParent.addView(child);
                 }
-                contentView.addView(mWrapParent);
-                return mWrapParent;
+                mChild = wrapParent;
+                contentView.addView(wrapParent);
+                return wrapParent;
             }
         }
         return null;
@@ -365,7 +369,14 @@ public class DefTitleBar {
      * 默认白色样式
      */
     public void whiteStyle() {
-        whiteStyle(Color.WHITE, false);
+        whiteStyle(false);
+    }
+
+    /**
+     * 默认白色样式
+     */
+    public void whiteStyle(boolean isTrans) {
+        whiteStyle(Color.WHITE, isTrans);
     }
 
     /**
@@ -378,35 +389,7 @@ public class DefTitleBar {
         if (mActivity == null) {
             return;
         }
-        // 1. 标题也是透明的
-        setRootBackgroundColor(Color.TRANSPARENT);
-        // 2. 标题颜色是透明的
-        setTitleBackgroundColor(Color.TRANSPARENT);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // 4. 设置Activity透明
-            TitleBarUtil.setStatusTranslucent(mActivity, Color.WHITE);
-            fitsSystem(true);
-            if (isTrans) {
-                // 3. 设置padding
-                TitleBarUtil.setTitlePadding(getContentView());
-                fitsSystem(false);
-            }
-            // 5. 状态栏字体是黑色的
-            TitleBarUtil.setMStateBarFontColor(mActivity, true);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 4. 设置Activity透明
-            TitleBarUtil.setStatusTranslucent(mActivity, Color.BLACK);
-            fitsSystem(true);
-            if (isTrans) {
-                TitleBarUtil.setTitlePadding(getContentView());
-                fitsSystem(false);
-            }
-        } else {
-            fitsSystem(true);
-        }
-        // 最后设置背景
-        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(windowColor));
+        colorStyle(Color.WHITE, windowColor, true, isTrans, false);
     }
 
     private View getContentView() {
@@ -414,10 +397,26 @@ public class DefTitleBar {
     }
 
     private void fitsSystem(boolean fitSystemWindows) {
-        if (mWrapParent == null) {
+        if (mChild == null) {
             return;
         }
-        mWrapParent.setFitsSystemWindows(fitSystemWindows);
+        if (!fitSystemWindows) {
+            // 重新设置标题栏
+            View titleView = getContentView();
+            titleView.post(() -> {
+                int statusBarHeight = TitleBarUtil.getStatusBarHeight(mActivity);
+                View clContent = findViewById(R.id.cl_title_content);
+                int height = clContent.getHeight();
+                if (mTitleHeight > 0) {
+                    height = mTitleHeight;
+                }
+                ViewGroup.LayoutParams lp = titleView.getLayoutParams();
+                lp.height = statusBarHeight + height;
+                titleView.setLayoutParams(lp);
+                titleView.setPadding(0, statusBarHeight, 0, 0);
+            });
+        }
+        mChild.setFitsSystemWindows(fitSystemWindows);
     }
 
 
@@ -439,27 +438,7 @@ public class DefTitleBar {
      * @param isDark      状态栏字体是不是黑色
      */
     public void resourceStyle(int resId, int windowColor, boolean isDark, boolean isTrans) {
-        // 1. 标题颜色
-        setRootBackgroundResource(resId);
-        // 2. 标题颜色是透明的
-        setTitleBackgroundResource(Color.TRANSPARENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 3. 设置标题和颜色
-            TitleBarUtil.setStatusTranslucent(mActivity, resId, true);
-            fitsSystem(true);
-            if (isTrans) {
-                // 4. 设置Activity透明
-                TitleBarUtil.setTitlePadding(getContentView());
-                fitsSystem(false);
-            }
-            // 5. 状态栏字体颜色
-            TitleBarUtil.setMStateBarFontColor(mActivity, isDark);
-        } else {
-            fitsSystem(true);
-        }
-        fitsSystem(true);
-        // 最后设置背景
-        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(windowColor));
+        colorStyle(resId, windowColor, isDark, isTrans, true);
     }
 
 
@@ -471,23 +450,26 @@ public class DefTitleBar {
      * @param isDark      状态栏字体是不是黑色
      * @param isTrans     除非渐变，不然建议设置为false
      */
-    public void colorStyle(int titleColor, int windowColor, boolean isDark, boolean isTrans) {
+    public void colorStyle(int titleColor, int windowColor, boolean isDark, boolean isTrans, boolean isResource) {
         // 1. 标题颜色
-        setRootBackgroundColor(titleColor);
+        if (isResource) {
+            setRootBackgroundResource(titleColor);
+        } else {
+            setRootBackgroundColor(titleColor);
+        }
         // 2. 标题颜色是透明的
         setTitleBackgroundResource(Color.TRANSPARENT);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 3. 设置标题和颜色
-            TitleBarUtil.setStatusTranslucent(mActivity, titleColor);
-            fitsSystem(true);
             // 如果要透明渐变
             if (isTrans) {
                 // 4. 设置Activity透明
-                TitleBarUtil.setTitlePadding(getContentView());
                 fitsSystem(false);
+            } else {
+                fitsSystem(true);
             }
-            // 5. 状态栏字体颜色
-            TitleBarUtil.setMStateBarFontColor(mActivity, isDark);
+            // 3. 设置标题和颜色
+            TitleBarUtil.setStatusTranslucent(mActivity, titleColor, isResource, isDark);
         } else {
             fitsSystem(true);
         }
@@ -497,7 +479,7 @@ public class DefTitleBar {
 
 
     public void colorStyle(int titleColor, int windowColor) {
-        colorStyle(titleColor, windowColor, false, false);
+        colorStyle(titleColor, windowColor, false, false, false);
     }
 
     /**

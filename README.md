@@ -15,8 +15,32 @@ allprojects {
 	}
 
 
-implementation 'com.github.wenkency:titlebar:2.0.5'
+implementation 'com.github.wenkency:titlebar:2.0.6'
 
+```
+### 清单配置
+```
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="cn.carhouse.quicktitle_sample">
+
+    <application>
+        <!-- 适配全面屏 -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="3.4" />
+        <!-- 适配小米(xiao mi)刘海屏 -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" /> 
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+
+    </application>
+
+</manifest>
 ```
 
 ### 使用方式

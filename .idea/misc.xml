@@ -9,6 +9,9 @@
       <map>
         <entry key="..\:/AndroidStudio/gitdemo/titlebar/app/src/main/res/layout/activity_main.xml" value="0.228125" />
         <entry key="..\:/AndroidStudio/gitdemo/titlebar/lib-titlebar/src/main/res/layout/base_layout_title_bar.xml" value="0.1453125" />
+        <entry key="..\:/github/titlebar/app/src/main/res/drawable-xxhdpi/ic_launcher_foreground.xml" value="0.224" />
+        <entry key="..\:/github/titlebar/app/src/main/res/layout/activity_main.xml" value="0.3177083333333333" />
+        <entry key="..\:/github/titlebar/lib-titlebar/src/main/res/layout/base_layout_title_bar.xml" value="0.3177083333333333" />
       </map>
     </option>
   </component>

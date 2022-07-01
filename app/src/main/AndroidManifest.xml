@@ -46,7 +46,6 @@
             android:exported="false"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 
         <activity
@@ -55,7 +54,6 @@
             android:exported="false"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
     </application>
 

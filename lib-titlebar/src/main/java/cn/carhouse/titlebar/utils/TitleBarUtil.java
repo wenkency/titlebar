@@ -120,10 +120,10 @@ public class TitleBarUtil {
 
             decorView.addView(view);
         }
-        if (!isResource) {
+       /* if (!isResource) {
             // 设置虚拟键盘颜色
             setNavigationBarColor(window, color);
-        }
+        }*/
     }
 
     /**

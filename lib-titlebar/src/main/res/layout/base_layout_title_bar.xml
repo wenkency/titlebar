@@ -23,11 +23,9 @@
 
             <ImageView
                 android:id="@+id/iv_title_left"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/title_bg_translate"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:scaleType="center" />
         </LinearLayout>
 

@@ -7,6 +7,7 @@ import android.view.View;
 
 import cn.carhouse.titlebar.DefTitleBar;
 import cn.carhouse.titlebar.DefTitleBuilder;
+import cn.carhouse.titlebar.utils.TitleBarUtil;
 
 public class ResourceStyleActivity extends BaseActivity {
 
@@ -34,6 +35,7 @@ public class ResourceStyleActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     public void toMain(View view) {

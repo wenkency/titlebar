@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_title_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="@dimen/title_height"
     app:elevation="0dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:id="@+id/cl_title_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height">
+        android:layout_height="@dimen/title_height"
+        android:layout_gravity="center">
         <!--左边布局-->
         <LinearLayout
             android:id="@+id/ll_title_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_title_left"
@@ -32,16 +30,13 @@
         <!--中间布局-->
         <LinearLayout
             android:id="@+id/ll_title_center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_title_center"
@@ -65,10 +60,9 @@
             android:id="@+id/ll_title_right"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="right"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_title_right"
@@ -82,15 +76,15 @@
                 android:textSize="15dp" />
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 
     <View
         android:id="@+id/v_title_line"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
         android:background="@color/lineColor"
         android:visibility="gone" />
 
-</LinearLayout>
+</FrameLayout>

@@ -19,16 +19,22 @@ public class SplashWhiteStyleActivity extends BaseActivity {
                 .setBackImageRes(R.drawable.ic_title_back)
                 .build();
         // titleBar.whiteStyle(true);
-        titleBar.colorStyle(Color.WHITE, Color.TRANSPARENT, true, true,false);
+        titleBar.colorStyle(Color.WHITE, Color.TRANSPARENT, true, true, false);
         titleBar.clearBackImage();
         titleBar.setTitle("我是白色标题栏");
         // 标题文本颜色
         titleBar.setTitleColor(Color.BLACK);
         titleBar.findViewById(R.id.v_title_line).setVisibility(View.VISIBLE);
         // 设置虚拟键盘为透明
-        TitleBarUtil.setNavigationBarTrans(getWindow());
+        //TitleBarUtil.setNavigationBarTrans(getWindow());
         // 隐藏状态栏、虚拟键盘
-        // TitleBarUtil.hideBarOrNav(getWindow(),true,true);
+        TitleBarUtil.hideBarOrNav(getWindow(), false, true,true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TitleBarUtil.hideBarOrNav(getWindow(), false, true,true);
     }
 
     public void toMain(View view) {

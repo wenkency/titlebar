@@ -131,6 +131,7 @@ public class DefTitleBar {
     private ViewGroup getParent(DefTitleBuilder params) {
         // 1. 有父类直接返回
         if (params.mParent != null) {
+            mChild = params.mParent;
             return params.mParent;
         }
         if (params.mActivity != null) {
@@ -343,6 +344,9 @@ public class DefTitleBar {
      */
     public void setTitleBackgroundColor(int color) {
         findViewById(R.id.cl_title_content).setBackgroundColor(color);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mActivity.getWindow().setStatusBarColor(color);
+        }
     }
 
     /**
@@ -410,6 +414,7 @@ public class DefTitleBar {
                 if (mTitleHeight > 0) {
                     height = mTitleHeight;
                 }
+                Log.e("TAG", statusBarHeight + ":" + height);
                 ViewGroup.LayoutParams lp = titleView.getLayoutParams();
                 lp.height = statusBarHeight + height;
                 titleView.setLayoutParams(lp);

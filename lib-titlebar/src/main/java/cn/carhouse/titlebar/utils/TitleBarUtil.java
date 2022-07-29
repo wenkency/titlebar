@@ -91,16 +91,13 @@ public class TitleBarUtil {
 
             if (isResource) {
                 // android系统级的资源id得这么拿,不然拿不到
-                decorView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int viewId = activity.getResources()
-                                .getIdentifier("statusBarBackground",
-                                        "id", "android");
-                        View statusBarView = window.findViewById(viewId);
-                        if (statusBarView != null) {
-                            statusBarView.setBackgroundResource(color);
-                        }
+                decorView.post(() -> {
+                    int viewId = activity.getResources()
+                            .getIdentifier("statusBarBackground",
+                                    "id", "android");
+                    View statusBarView = window.findViewById(viewId);
+                    if (statusBarView != null) {
+                        statusBarView.setBackgroundResource(color);
                     }
                 });
             } else {
@@ -237,6 +234,10 @@ public class TitleBarUtil {
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // 不加这个，会有灰色背景
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                window.setNavigationBarContrastEnforced(false);
+            }
             window.setNavigationBarColor(color);
         }
     }
@@ -249,21 +250,31 @@ public class TitleBarUtil {
     }
 
 
-/*    // 隐藏状态栏
-    public static void hideStatusBar(@NonNull Window window) {
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    public static void hideBar(Window window) {
+        hideBar(window, false);
     }
 
-    // 显示状态栏
-    public static void showStatusBar(@NonNull Window window) {
-        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }*/
+    public static void hideBar(Window window, boolean isDark) {
+        hideBarOrNav(window, true, false, isDark);
+    }
+
+    public static void hideNav(Window window) {
+        hideNav(window, false);
+    }
+
+    public static void hideNav(Window window, boolean isDark) {
+        hideBarOrNav(window, false, true, isDark);
+    }
+
+    public static void hideBarOrNav(Window window, boolean hideBar, boolean hideNav) {
+        hideBarOrNav(window, hideBar, hideNav, false);
+    }
+
     /**
      * Hide bar.
      * 隐藏或显示状态栏和导航栏。
      */
-    public static void hideBarOrNav(Window window, boolean hideBar, boolean hideNav) {
+    public static void hideBarOrNav(Window window, boolean hideBar, boolean hideNav, boolean isDark) {
         if (window == null) {
             return;
         }
@@ -277,6 +288,9 @@ public class TitleBarUtil {
         } else if (hideNav) {
             uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        }
+        if (!hideBar && isDark) {
+            uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         }
         window.getDecorView().setSystemUiVisibility(uiFlags);
     }

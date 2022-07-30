@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 
 public class TitleBarUtil {
 
+    // UI显示默认效果
     private static int FLAGS = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             | View.SYSTEM_UI_FLAG_VISIBLE
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -31,7 +32,7 @@ public class TitleBarUtil {
      * @param activity
      * @param isDark   true 黑色 false 白色
      */
-    public static void setMStateBarFontColor(Activity activity, boolean isDark) {
+    public static void stateBarFontColor(Activity activity, boolean isDark) {
         if (activity == null || activity.getWindow() == null || activity.getWindow().getDecorView() == null) {
             return;
         }
@@ -55,143 +56,48 @@ public class TitleBarUtil {
      *
      * @param activity
      * @param color
-     * @param isResource 是不是资源
      */
-    public static void setStatusTranslucent(final Activity activity,
-                                            final int color,
-                                            final boolean isResource,
-                                            final boolean isDark) {
+    public static void statusBarTrans(final Activity activity,
+                                      final int color,
+                                      final boolean isDark) {
         //4.4以下
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT || activity == null) {
             return;
         }
-        // 设置为透明的状态栏
-        setStatusBar(activity);
-
         final Window window = activity.getWindow();
         // 适配刘海屏
         fitsNotchScreen(window);
-
-
+        // 清除透明信息
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         // 获取到decorView
         ViewGroup decorView = (ViewGroup) window.getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // FLAG_TRANSLUCENT_STATUS
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             int flags = FLAGS;
             if (isDark) {
                 flags = FLAGS | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             }
-            window.getDecorView().setSystemUiVisibility(flags);
-
+            // 设置布局的Flags
+            decorView.setSystemUiVisibility(flags);
             // 需要设置这个才能设置状态栏和导航栏颜色
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
-
-            if (isResource) {
-                // android系统级的资源id得这么拿,不然拿不到
-                decorView.post(() -> {
-                    int viewId = activity.getResources()
-                            .getIdentifier("statusBarBackground",
-                                    "id", "android");
-                    View statusBarView = window.findViewById(viewId);
-                    if (statusBarView != null) {
-                        statusBarView.setBackgroundResource(color);
-                    }
-                });
-            } else {
-                window.setStatusBarColor(color);
-            }
-
+            // 设置状态栏颜色
+            window.setStatusBarColor(color);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //4.4- 5.0之间的
             // 创建一个View
             View view = new View(activity);
-            if (isResource) {
-                view.setBackgroundResource(color);
-            } else {
-                view.setBackgroundColor(color);
-            }
+            view.setBackgroundColor(color);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(activity)));
-
             decorView.addView(view);
         }
-       /* if (!isResource) {
-            // 设置虚拟键盘颜色
-            setNavigationBarColor(window, color);
-        }*/
     }
 
     /**
      * 设置状态栏为透明
      */
-    public static void setStatusTranslucent(Activity activity) {
-        setStatusTranslucent(activity, Color.TRANSPARENT, false, false);
-    }
-
-    /**
-     * 浸入式状态栏实现同时取消5.0以上的阴影
-     */
-    public static void setStatusBar(Activity activity) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return;
-        }
-        Window window = activity.getWindow();
-        // 设置虚拟键盘跟着屏幕自动
-        window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-    }
-
-
-    /**
-     * 设置TitleBar的高度
-     */
-    public static void setTitlePadding(View titleView) {
-        setTitlePadding(titleView, false);
-    }
-
-    /**
-     * 设置TitleBar的高度
-     */
-    public static void setTitlePadding(View titleView, boolean isNeedOld) {
-        if (titleView == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int padding = getStatusBarHeight(titleView.getContext());
-            if (isNeedOld) {
-                padding += titleView.getPaddingTop();
-            }
-            titleView.setPadding(titleView.getPaddingLeft(), padding, titleView.getPaddingRight(), titleView.getPaddingBottom());
-        } else {
-            titleView.setPadding(0, 0, 0, 0);
-        }
-    }
-
-    /**
-     * 设置TitleBar的高度
-     */
-    public static void setTitleHeight(Activity activity, View titleView) {
-        setTitleHeight(activity, titleView, true);
-    }
-
-    /**
-     * 设置TitleBar的高度
-     */
-    public static void setTitleHeight(Activity activity, View titleView, boolean isPadding) {
-        if (titleView == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ViewGroup.LayoutParams lp = titleView.getLayoutParams();
-            lp.height = lp.height + getStatusBarHeight(activity);
-            titleView.setLayoutParams(lp);
-            if (isPadding) {
-                titleView.setPadding(0, getStatusBarHeight(activity), 0, 0);
-            }
-        }
+    public static void statusBarTrans(Activity activity) {
+        statusBarTrans(activity, Color.TRANSPARENT, false);
     }
 
 
@@ -221,7 +127,6 @@ public class TitleBarUtil {
                 lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
                 window.setAttributes(lp);
             } catch (Exception e) {
-
             }
         }
     }
@@ -229,7 +134,7 @@ public class TitleBarUtil {
     /**
      * 设置虚拟键盘颜色
      */
-    public static void setNavigationBarColor(Window window, int color) {
+    public static void navigationBarColor(Window window, int color) {
         if (window == null) {
             return;
         }
@@ -245,8 +150,22 @@ public class TitleBarUtil {
     /**
      * 设置虚拟键盘颜色
      */
-    public static void setNavigationBarTrans(Window window) {
-        setNavigationBarColor(window, Color.TRANSPARENT);
+    public static void navigationBarTrans(Window window) {
+        navigationBarColor(window, Color.TRANSPARENT);
+    }
+
+    public static void navigationWhite(Window window) {
+        navigationWhite(window, true);
+    }
+
+    public static void navigationWhite(Window window, boolean isDark) {
+        int flags = FLAGS | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+        if (isDark) {
+            // 状态栏
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
+        window.getDecorView().setSystemUiVisibility(flags);
+        navigationBarColor(window, Color.WHITE);
     }
 
 

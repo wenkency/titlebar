@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import cn.carhouse.titlebar.utils.DensityUtils;
+
 /**
  * 构建通用标题栏
  */
@@ -161,16 +163,9 @@ public class DefTitleBuilder {
      * 设置标题默认高度
      */
     public DefTitleBuilder setHeight(int height) {
-        this.mHeight = dip2px(height);
+        this.mHeight = DensityUtils.dp2px(height);
         return this;
     }
 
-    public int dip2px(int dip) {
-        if (this == null || this.mActivity == null) {
-            return 0;
-        }
-        // 缩放比例(密度)
-        float density = this.mActivity.getResources().getDisplayMetrics().density;
-        return (int) (dip * density + 0.5);
-    }
+
 }

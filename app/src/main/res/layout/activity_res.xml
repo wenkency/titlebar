@@ -3,9 +3,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fl"
-    android:fitsSystemWindows="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context=".ColorStyleActivity"
     tools:ignore="MissingDefaultResource">
 
@@ -16,14 +16,14 @@
         android:scaleType="fitXY" />
 
     <FrameLayout
-        android:id="@+id/fl_title"
+        android:id="@+id/fl_title_res"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:onClick="toMain"
         android:text="页面跳转" />

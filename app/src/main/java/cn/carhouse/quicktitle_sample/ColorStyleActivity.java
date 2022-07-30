@@ -7,7 +7,6 @@ import android.view.View;
 
 import cn.carhouse.titlebar.DefTitleBar;
 import cn.carhouse.titlebar.DefTitleBuilder;
-import cn.carhouse.titlebar.utils.TitleBarUtil;
 
 public class ColorStyleActivity extends BaseActivity {
 
@@ -21,12 +20,15 @@ public class ColorStyleActivity extends BaseActivity {
                 .setBackImageFilterColor(Color.WHITE)
                 .build();
         // 标题文字
-        titleBar.setTitle("我是颜色标题栏");
-        int color = Color.parseColor("#55cdabcd");
-        // 标题的颜色、背景颜色、6.0+状态栏字体是不是黑色
-        titleBar.colorStyle(Color.TRANSPARENT, Color.TRANSPARENT, false, true, false);
-        // 标题文本颜色
-        titleBar.setTitleColor(Color.WHITE);
+        int color = Color.parseColor("#88cdabcd");
+        // 配置标题
+        titleBar.setTitle("我是颜色标题栏")
+                // 标题的颜色、背景颜色、6.0+状态栏字体是不是黑色
+                .colorStyle(color, Color.TRANSPARENT)
+                // 设置虚拟键盘透明
+                .navigationBarTrans()
+                // 标题文本颜色
+                .setTitleColor(Color.WHITE);
         // 右边图片及点击事件
         titleBar.setRightIcon(R.mipmap.ic_launcher, new View.OnClickListener() {
             @Override
@@ -34,9 +36,6 @@ public class ColorStyleActivity extends BaseActivity {
                 toSecondActivity(v);
             }
         });
-        TitleBarUtil.setNavigationBarTrans(getWindow());
-
-        titleBar.setTitleBackgroundColor(color);
     }
 
     public void toSecondActivity(View view) {

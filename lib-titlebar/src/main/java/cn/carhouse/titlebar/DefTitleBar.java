@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cn.carhouse.titlebar.utils.DensityUtils;
 import cn.carhouse.titlebar.utils.TitleBarUtil;
 
 /**
@@ -163,7 +164,7 @@ public class DefTitleBar {
     }
 
 
-    public <T extends View> T findViewById(int viewId) {
+    public <T extends View> T getView(int viewId) {
         return mViewHelper.findViewById(viewId);
     }
 
@@ -184,7 +185,7 @@ public class DefTitleBar {
      */
     public DefTitleBar setLeftView(int leftResId) {
         if (leftResId != 0) {
-            LinearLayout leftLayout = findViewById(R.id.ll_title_left);
+            LinearLayout leftLayout = getView(R.id.ll_title_left);
             leftLayout.removeAllViews();
             View leftView = LayoutInflater.from(leftLayout.getContext())
                     .inflate(leftResId, leftLayout, false);
@@ -198,7 +199,7 @@ public class DefTitleBar {
      */
     public DefTitleBar setLeftView(View leftView) {
         if (leftView != null) {
-            LinearLayout leftLayout = findViewById(R.id.ll_title_left);
+            LinearLayout leftLayout = getView(R.id.ll_title_left);
             if (leftLayout != null) {
                 leftLayout.removeAllViews();
                 leftLayout.addView(leftView);
@@ -212,7 +213,7 @@ public class DefTitleBar {
      * 清除返回按钮
      */
     public DefTitleBar clearBackImage() {
-        LinearLayout leftLayout = findViewById(R.id.ll_title_left);
+        LinearLayout leftLayout = getView(R.id.ll_title_left);
         if (leftLayout != null) {
             leftLayout.removeAllViews();
         }
@@ -220,7 +221,7 @@ public class DefTitleBar {
     }
 
     public DefTitleBar setRightText(CharSequence text, View.OnClickListener onClickListener) {
-        TextView tv = findViewById(R.id.tv_title_right);
+        TextView tv = getView(R.id.tv_title_right);
         if (tv != null) {
             tv.setText(text);
             tv.setOnClickListener(onClickListener);
@@ -233,7 +234,7 @@ public class DefTitleBar {
     }
 
     public DefTitleBar setRightTextClick(View.OnClickListener onClickListener) {
-        TextView tv = findViewById(R.id.tv_title_right);
+        TextView tv = getView(R.id.tv_title_right);
         if (tv != null) {
             tv.setOnClickListener(onClickListener);
         }
@@ -241,7 +242,7 @@ public class DefTitleBar {
     }
 
     public DefTitleBar setRightTextColor(int color) {
-        TextView tv = findViewById(R.id.tv_title_right);
+        TextView tv = getView(R.id.tv_title_right);
         if (tv != null) {
             tv.setTextColor(color);
         }
@@ -249,7 +250,7 @@ public class DefTitleBar {
     }
 
     public TextView getRightText() {
-        TextView tv = findViewById(R.id.tv_title_right);
+        TextView tv = getView(R.id.tv_title_right);
         return tv;
     }
 
@@ -258,7 +259,7 @@ public class DefTitleBar {
      */
     public DefTitleBar setRightView(int rightResId) {
         if (rightResId != 0) {
-            LinearLayout rightLayout = findViewById(R.id.ll_title_right);
+            LinearLayout rightLayout = getView(R.id.ll_title_right);
             rightLayout.removeAllViews();
             View rightView = LayoutInflater.from(rightLayout.getContext())
                     .inflate(rightResId, rightLayout, false);
@@ -272,7 +273,7 @@ public class DefTitleBar {
      */
     public DefTitleBar setRightView(View rightView) {
         if (rightView != null) {
-            LinearLayout rightLayout = findViewById(R.id.ll_title_right);
+            LinearLayout rightLayout = getView(R.id.ll_title_right);
             rightLayout.removeAllViews();
             rightLayout.addView(rightView);
         }
@@ -293,19 +294,19 @@ public class DefTitleBar {
      */
     public DefTitleBar setRightIcons(int[] rightResIcons, View.OnClickListener[] rightResClicks) {
         if (rightResIcons != null && rightResIcons.length > 0) {
-            LinearLayout rightLayout = findViewById(R.id.ll_title_right);
+            LinearLayout rightLayout = getView(R.id.ll_title_right);
             rightLayout.removeAllViews();
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
             ImageView imageView;
-            int padding = dip2px(5);
+            int padding = DensityUtils.dp2px(5);
             for (int i = 0; i < rightResIcons.length; i++) {
                 imageView = new ImageView(mActivity);
                 imageView.setScaleType(ImageView.ScaleType.CENTER);
                 imageView.setImageResource(rightResIcons[i]);
                 imageView.setPadding(padding, padding, padding, padding);
                 if (i == rightResIcons.length - 1) {
-                    imageView.setPadding(padding, padding, dip2px(10), padding);
+                    imageView.setPadding(padding, padding, DensityUtils.dp2px(10), padding);
                 }
                 // 设置点击事件
                 if (rightResClicks != null && rightResClicks.length >= i) {
@@ -321,29 +322,32 @@ public class DefTitleBar {
     /**
      * 设置根布局背景颜色
      */
-    public void setRootBackgroundResource(int resId) {
-        findViewById(R.id.ll_title_root).setBackgroundResource(resId);
+    public DefTitleBar setRootBackgroundResource(int resId) {
+        getView(R.id.ll_title_root).setBackgroundResource(resId);
+        return this;
     }
 
     /**
      * 设置标题内容背景颜色
      */
-    public void setTitleBackgroundResource(int resId) {
-        findViewById(R.id.cl_title_content).setBackgroundResource(resId);
+    public DefTitleBar setTitleBackgroundResource(int resId) {
+        getView(R.id.cl_title_content).setBackgroundResource(resId);
+        return this;
     }
 
     /**
      * 设置根布局背景颜色
      */
-    public void setRootBackgroundColor(int color) {
-        findViewById(R.id.ll_title_root).setBackgroundColor(color);
+    public DefTitleBar setRootBackgroundColor(int color) {
+        getView(R.id.ll_title_root).setBackgroundColor(color);
+        return this;
     }
 
     /**
      * 设置标题内容背景颜色
      */
     public void setTitleBackgroundColor(int color) {
-        findViewById(R.id.cl_title_content).setBackgroundColor(color);
+        getView(R.id.cl_title_content).setBackgroundColor(color);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mActivity.getWindow().setStatusBarColor(color);
         }
@@ -352,48 +356,23 @@ public class DefTitleBar {
     /**
      * 设置标题返回图片过滤色
      */
-    public void setBackImageColorFilter(int color) {
-        ImageView ivBack = findViewById(R.id.iv_title_left);
+    public DefTitleBar setBackImageColorFilter(int color) {
+        ImageView ivBack = getView(R.id.iv_title_left);
         if (ivBack != null) {
             ivBack.setColorFilter(color);
         }
+        return this;
     }
 
     /**
      * 设置标题返回图片
      */
-    public void setBackImageRes(int res) {
-        ImageView ivBack = findViewById(R.id.iv_title_left);
+    public DefTitleBar setBackImageRes(int res) {
+        ImageView ivBack = getView(R.id.iv_title_left);
         if (ivBack != null) {
             ivBack.setImageResource(res);
         }
-    }
-
-    /**
-     * 默认白色样式
-     */
-    public void whiteStyle() {
-        whiteStyle(false);
-    }
-
-    /**
-     * 默认白色样式
-     */
-    public void whiteStyle(boolean isTrans) {
-        whiteStyle(Color.WHITE, isTrans);
-    }
-
-    /**
-     * 白底黑字的样式
-     *
-     * @param windowColor 背景色
-     * @param isTrans     除非渐变，不然建议设置为false
-     */
-    public void whiteStyle(int windowColor, boolean isTrans) {
-        if (mActivity == null) {
-            return;
-        }
-        colorStyle(Color.WHITE, windowColor, true, isTrans, false);
+        return this;
     }
 
     private View getContentView() {
@@ -407,43 +386,17 @@ public class DefTitleBar {
         if (!fitSystemWindows) {
             // 重新设置标题栏
             View titleView = getContentView();
-            titleView.post(() -> {
-                int statusBarHeight = TitleBarUtil.getStatusBarHeight(mActivity);
-                View clContent = findViewById(R.id.cl_title_content);
-                int height = clContent.getHeight();
-                if (mTitleHeight > 0) {
-                    height = mTitleHeight;
-                }
-                Log.e("TAG", statusBarHeight + ":" + height);
-                ViewGroup.LayoutParams lp = titleView.getLayoutParams();
-                lp.height = statusBarHeight + height;
-                titleView.setLayoutParams(lp);
-                titleView.setPadding(0, statusBarHeight, 0, 0);
-            });
+            int statusBarHeight = TitleBarUtil.getStatusBarHeight(mActivity);
+            int height = DensityUtils.dp2px(48);
+            if (mTitleHeight > 0) {
+                height = mTitleHeight;
+            }
+            ViewGroup.LayoutParams lp = titleView.getLayoutParams();
+            lp.height = statusBarHeight + height;
+            titleView.setLayoutParams(lp);
+            titleView.setPadding(0, statusBarHeight, 0, 0);
         }
         mChild.setFitsSystemWindows(fitSystemWindows);
-    }
-
-
-    /**
-     * 标题样式:适用于渐变色
-     *
-     * @param resId       标题的颜色
-     * @param windowColor 背景颜色
-     */
-    public void resourceStyle(int resId, int windowColor) {
-        this.resourceStyle(resId, windowColor, false, false);
-    }
-
-    /**
-     * 标题样式
-     *
-     * @param resId       标题的颜色
-     * @param windowColor 背景颜色
-     * @param isDark      状态栏字体是不是黑色
-     */
-    public void resourceStyle(int resId, int windowColor, boolean isDark, boolean isTrans) {
-        colorStyle(resId, windowColor, isDark, isTrans, true);
     }
 
 
@@ -455,65 +408,137 @@ public class DefTitleBar {
      * @param isDark      状态栏字体是不是黑色
      * @param isTrans     除非渐变，不然建议设置为false
      */
-    public void colorStyle(int titleColor, int windowColor, boolean isDark, boolean isTrans, boolean isResource) {
-        // 1. 标题颜色
-        if (isResource) {
-            setRootBackgroundResource(titleColor);
-        } else {
-            setRootBackgroundColor(titleColor);
+    public DefTitleBar colorStyle(int titleColor, int windowColor, boolean isDark, boolean isTrans) {
+        if (mActivity == null) {
+            return this;
         }
-        // 2. 标题颜色是透明的
-        setTitleBackgroundResource(Color.TRANSPARENT);
+        // 1. 标题颜色
+        setRootBackgroundColor(titleColor);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 如果要透明渐变
             if (isTrans) {
-                // 4. 设置Activity透明
+                // 2. 适配布局
                 fitsSystem(false);
             } else {
                 fitsSystem(true);
             }
             // 3. 设置标题和颜色
-            TitleBarUtil.setStatusTranslucent(mActivity, titleColor, isResource, isDark);
+            TitleBarUtil.statusBarTrans(mActivity, titleColor, isDark);
         } else {
             fitsSystem(true);
         }
         // 最后设置背景
         mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(windowColor));
+
+        return this;
     }
 
-
-    public void colorStyle(int titleColor, int windowColor) {
-        colorStyle(titleColor, windowColor, false, false, false);
+    public DefTitleBar colorStyle(int titleColor, int windowColor) {
+        return colorStyle(titleColor, windowColor, false, false);
     }
+
 
     /**
      * 设置标题
      */
-    public void setTitle(CharSequence title) {
+    public DefTitleBar setTitle(CharSequence title) {
         setText(R.id.tv_title_center, title);
+        return this;
     }
 
     /**
      * 设置标题颜色
      */
-    public void setTitleColor(int color) {
+    public DefTitleBar setTitleColor(int color) {
         setTextColor(R.id.tv_title_center, color);
+        return this;
+    }
+
+    /**
+     * 设置下划线是否显示
+     *
+     * @return
+     */
+    public DefTitleBar setLineVisible(int visibility) {
+        getView(R.id.v_title_line).setVisibility(visibility);
+        return this;
     }
 
     /**
      * 获取标题控件
      */
     public TextView getTitle() {
-        return findViewById(R.id.tv_title_center);
+        return getView(R.id.tv_title_center);
     }
 
-    public int dip2px(int dip) {
-        if (mActivity == null) {
-            return 0;
-        }
-        // 缩放比例(密度)
-        float density = mActivity.getResources().getDisplayMetrics().density;
-        return (int) (dip * density + 0.5);
+    public DefTitleBar navigationWhite() {
+        return navigationWhite(true);
     }
+
+    public DefTitleBar navigationWhite(boolean isDark) {
+        if (mActivity != null) {
+            TitleBarUtil.navigationWhite(mActivity.getWindow(), isDark);
+        }
+        return this;
+    }
+
+    /**
+     * 设置虚拟键盘颜色
+     */
+    public DefTitleBar navigationBarColor(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mActivity != null) {
+                Window window = mActivity.getWindow();
+                // 不加这个，会有灰色背景
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    window.setNavigationBarContrastEnforced(false);
+                }
+                window.setNavigationBarColor(color);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * 设置虚拟键盘透明
+     */
+    public DefTitleBar navigationBarTrans() {
+        return navigationBarColor(Color.TRANSPARENT);
+    }
+
+
+    public DefTitleBar hideBar() {
+        return hideBar(false);
+    }
+
+    public DefTitleBar hideBar(boolean isDark) {
+        hideBarOrNav(true, false, isDark);
+        return this;
+    }
+
+    public DefTitleBar hideNav() {
+        return hideNav(false);
+    }
+
+    public DefTitleBar hideNav(boolean isDark) {
+        return hideBarOrNav(false, true, isDark);
+    }
+
+    public DefTitleBar hideBarOrNav(boolean hideBar, boolean hideNav) {
+        return hideBarOrNav(hideBar, hideNav, false);
+    }
+
+    /**
+     * Hide bar.
+     * 隐藏或显示状态栏和导航栏。
+     */
+    public DefTitleBar hideBarOrNav(boolean hideBar, boolean hideNav, boolean isDark) {
+        if (mActivity != null) {
+            TitleBarUtil.hideBarOrNav(mActivity.getWindow(), hideBar, hideNav, isDark);
+        }
+        return this;
+    }
+
+
 }

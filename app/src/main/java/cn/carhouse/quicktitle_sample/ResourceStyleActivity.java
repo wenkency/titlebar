@@ -4,36 +4,38 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 
 import cn.carhouse.titlebar.DefTitleBar;
 import cn.carhouse.titlebar.DefTitleBuilder;
-import cn.carhouse.titlebar.utils.TitleBarUtil;
 
 public class ResourceStyleActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        DefTitleBar titleBar = new DefTitleBuilder(this)
+        setContentView(R.layout.activity_res);
+        ViewGroup title = findViewById(R.id.fl_title_res);
+        DefTitleBar titleBar = new DefTitleBuilder(this, title)
                 // 返回按钮
                 .setBackImageRes(R.drawable.ic_title_back)
                 .setBackImageFilterColor(Color.WHITE)
-                .setHeight(65)
+                .setHeight(80)
                 .build();
         // 标题文字
-        titleBar.setTitle("我是资源渐变标题栏");
-        // 标题的颜色、背景颜色、6.0+状态栏字体是不是黑色
-        titleBar.resourceStyle(R.drawable.bg_good_list_gradient, Color.WHITE);
-        // 标题文本颜色
-        titleBar.setTitleColor(Color.WHITE);
+        titleBar.setTitle("我是资源渐变标题栏")
+                // 标题的颜色、背景颜色、6.0+状态栏字体是不是黑色、透明
+                .colorStyle(Color.TRANSPARENT, Color.TRANSPARENT, false, true)
+                .navigationBarTrans()
+                // 设置资源渐变背景
+                .setRootBackgroundResource(R.drawable.bg_good_list_gradient)
+                // 标题文本颜色
+                .setTitleColor(Color.WHITE);
+
         // 右边图片及点击事件
-        titleBar.setRightIcon(R.mipmap.ic_launcher, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ResourceStyleActivity.this, ColorStyleActivity.class);
-                startActivity(intent);
-            }
+        titleBar.setRightIcon(R.mipmap.ic_launcher, v -> {
+            Intent intent = new Intent(ResourceStyleActivity.this, ColorStyleActivity.class);
+            startActivity(intent);
         });
 
     }

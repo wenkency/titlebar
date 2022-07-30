@@ -5,9 +5,8 @@ plugins {
 }
 
 def app = rootProject.app
-def versions = rootProject.versions
-def libVersion = 207
-def libVersionName = '2.0.7'
+def libVersion = 208
+def libVersionName = '2.0.8'
 
 group = 'com.github.wenkency'
 version = libVersionName

@@ -15,7 +15,7 @@ allprojects {
 	}
 
 
-implementation 'com.github.wenkency:titlebar:2.0.8'
+implementation 'com.github.wenkency:titlebar:2.0.9'
 
 ```
 ### 清单配置

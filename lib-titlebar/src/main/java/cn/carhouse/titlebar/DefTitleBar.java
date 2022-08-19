@@ -3,6 +3,7 @@ package cn.carhouse.titlebar;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.SensorEvent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.carhouse.titlebar.utils.DensityUtils;
+import cn.carhouse.titlebar.utils.SensorUtils;
 import cn.carhouse.titlebar.utils.TitleBarUtil;
 
 /**
@@ -27,6 +29,7 @@ public class DefTitleBar {
     private View mChild;
     private TitleViewHelper mViewHelper;
     private int mTitleHeight;
+    private SensorUtils sensorUtils;
 
     /**
      * 这个是标题布局，子类可以复写
@@ -46,6 +49,12 @@ public class DefTitleBar {
         }
         mActivity = params.mActivity;
         mTitleHeight = params.mHeight;
+        // sensor 监听
+        sensorUtils = new SensorUtils(mActivity);
+        sensorUtils.setOnSensorChangeListener((event, rotation) -> {
+            fitsSystem();
+        });
+        sensorUtils.start();
         // 2. 找父布局
         ViewGroup parent = getParent(params);
         if (parent == null) {
@@ -379,24 +388,40 @@ public class DefTitleBar {
         return mViewHelper.getContentView();
     }
 
+    boolean fitSystemWindows;
+    int barHeight;
+
+    // 适配旋转
+    public void fitsSystem() {
+        getContentView().postDelayed(() -> {
+            int height = TitleBarUtil.getStatusBarHeight(mActivity);
+            if (height == barHeight) {
+                return;
+            }
+            fitsSystem(fitSystemWindows);
+        }, 100);
+    }
+
     private void fitsSystem(boolean fitSystemWindows) {
         if (mChild == null) {
             return;
         }
+        this.fitSystemWindows = fitSystemWindows;
+        mChild.setFitsSystemWindows(fitSystemWindows);
         if (!fitSystemWindows) {
             // 重新设置标题栏
             View titleView = getContentView();
-            int statusBarHeight = TitleBarUtil.getStatusBarHeight(mActivity);
+            barHeight = TitleBarUtil.getStatusBarHeight(mActivity);
             int height = DensityUtils.dp2px(48);
             if (mTitleHeight > 0) {
                 height = mTitleHeight;
             }
             ViewGroup.LayoutParams lp = titleView.getLayoutParams();
-            lp.height = statusBarHeight + height;
+            lp.height = barHeight + height;
             titleView.setLayoutParams(lp);
-            titleView.setPadding(0, statusBarHeight, 0, 0);
+            titleView.setPadding(0, barHeight, 0, 0);
         }
-        mChild.setFitsSystemWindows(fitSystemWindows);
+
     }
 
 
@@ -539,6 +564,5 @@ public class DefTitleBar {
         }
         return this;
     }
-
 
 }

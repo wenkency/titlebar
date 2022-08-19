@@ -17,7 +17,7 @@ public class SplashWhiteStyleActivity extends BaseActivity {
         DefTitleBar titleBar = new DefTitleBuilder(this)
                 .setBackImageRes(R.drawable.ic_title_back)
                 .build();
-        titleBar.colorStyle(Color.WHITE, Color.TRANSPARENT, true, false)
+        titleBar.colorStyle(Color.WHITE, Color.TRANSPARENT, true, true)
                 .setBackImageColorFilter(Color.BLACK)
                 .setTitle("我是白色标题栏")
                 // 设置虚拟键盘为白色

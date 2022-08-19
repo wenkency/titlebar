@@ -5,8 +5,8 @@ plugins {
 }
 
 def app = rootProject.app
-def libVersion = 208
-def libVersionName = '2.0.8'
+def libVersion = 209
+def libVersionName = '2.0.9'
 
 group = 'com.github.wenkency'
 version = libVersionName
@@ -32,8 +32,6 @@ android {
     defaultConfig {
         minSdkVersion app.minSdkVersion
         targetSdkVersion app.targetSdkVersion
-        versionCode libVersion
-        versionName libVersionName
     }
     buildTypes {
         release {

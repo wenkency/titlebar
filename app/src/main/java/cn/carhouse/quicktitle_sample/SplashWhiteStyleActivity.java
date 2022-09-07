@@ -21,7 +21,8 @@ public class SplashWhiteStyleActivity extends BaseActivity {
                 .setBackImageColorFilter(Color.BLACK)
                 .setTitle("我是白色标题栏")
                 // 设置虚拟键盘为白色
-                .navigationWhite()
+                .navigationBarTrans()
+                .hideNav(true)
                 // 标题文本颜色
                 .setTitleColor(Color.BLACK)
                 .setLineVisible(View.VISIBLE);

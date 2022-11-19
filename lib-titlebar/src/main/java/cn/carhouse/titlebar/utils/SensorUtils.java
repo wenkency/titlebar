@@ -43,6 +43,8 @@ public class SensorUtils implements SensorEventListener {
     public void stop() {
         sensorManager.unregisterListener(this);
         activity.getApplication().unregisterActivityLifecycleCallbacks(callbacks);
+        sensorManager = null;
+        activity = null;
     }
 
     private int getRotation() {
